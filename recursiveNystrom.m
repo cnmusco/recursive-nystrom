@@ -1,6 +1,6 @@
 function [C,W] = recursiveNystrom(X,s,kernelFunc,accelerated_flag)
     %% Recursive Nystrom Sampling Based on Ridge Leverage Scores
-    % This file implementations Algorithm 3 as described in 
+    % This file implements Algorithm 3 as described in 
     %   https://arxiv.org/abs/1605.07583
     %
     % usage : 
@@ -10,18 +10,19 @@ function [C,W] = recursiveNystrom(X,s,kernelFunc,accelerated_flag)
     %  * X : matrix with n rows (data points) and d columns (features)
     %
     %  * s : the number of samples used to construct the Nystrom
-    %  approximation. In general, s < n.
+    %  approximation. default = sqrt(n). Generally should set s < n.
     %
     %  * kernelFunc : A function that can compute arbitrary submatrices of
     %  X's kernel matrix for some positive semidefinite kernel. For
     %  implementation specifics, see the provided example gaussianKernel.m
     %
-    %  * accelerated_flag: either 0 or 1. If the flag is set to 1, the code
-    %  uses an accelerated version of the algorithm as described in Section
-    %  5.2.1 of https://arxiv.org/abs/1605.07583. This version will output
-    %  a lower quality Nystrom approximation, but will run more quickly. We
-    %  recommend setting accelerated_flag = 0 (the default) unless the
-    %  standard version of the algorithm runs too slowly for your purposes.
+    %  * accelerated_flag: either 0 or 1. default = 0. If the flag is set to 1,
+    %  the code uses an accelerated version of the algorithm as described
+    %  in Section 5.2.1 of https://arxiv.org/abs/1605.07583. This version 
+    %  will output a lower quality Nystrom approximation, but will run more
+    %  quickly. We recommend setting accelerated_flag = 0 (the default) 
+    %  unless the standard version of the algorithm runs too slowly for 
+    %  your purposes.
     %
     % output :
     %
