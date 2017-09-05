@@ -1,13 +1,13 @@
-function Ksub = gaussianKernel(D,rowInd,colInd,gamma)
+function Ksub = gaussianKernel(X,rowInd,colInd,gamma)
     %% Guassian kernel generator
     % Outputs a submatrix of the Gaussian kernel with variance paramater 
-    % gamma for the data rows of D. 
+    % gamma for the data rows of X. 
     %
     % usage : 
     %
     % input:
     %
-    %  * D : A matrix with n rows (data points) and d columns (features)
+    %  * X : A matrix with n rows (data points) and d columns (features)
     %
     %  * rowInd, colInd : Lists of indices between 1 and n. 
     %
@@ -18,15 +18,15 @@ function Ksub = gaussianKernel(D,rowInd,colInd,gamma)
     %
     % output:
     %
-    %  * Ksub : Let K(i,j) = e^-(gamma*||D(i,:)-D(j,:)||^2). Then Ksub = 
+    %  * Ksub : Let K(i,j) = e^-(gamma*||X(i,:)-X(j,:)||^2). Then Ksub = 
     %  K(rowInd,colInd). Or if colInd = [] then Ksub = diag(K)(rowInd).
     
     if(isempty(colInd))
         Ksub = ones(length(rowInd),1);
     else
-        nsqRows = sum(D(rowInd,:).^2,2);
-        nsqCols = sum(D(colInd,:).^2,2);
-        Ksub = bsxfun(@minus,nsqRows,D(rowInd,:)*(2*D(colInd,:))');
+        nsqRows = sum(X(rowInd,:).^2,2);
+        nsqCols = sum(X(colInd,:).^2,2);
+        Ksub = bsxfun(@minus,nsqRows,X(rowInd,:)*(2*X(colInd,:))');
         Ksub = bsxfun(@plus,nsqCols',Ksub);
         Ksub = exp(-gamma*Ksub);         
     end

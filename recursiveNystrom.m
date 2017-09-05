@@ -35,7 +35,7 @@ function [C,W] = recursiveNystrom(X,s,kernelFunc,accelerated_flag)
     % algorithm (regression, SVM, etc.) to approximate the kernel version 
     % of the algorithm. Caveat: the accelerated version of our algorithm 
     % runs in O(ns) time. Computing F = C*chol(W)' takes O(ns^2) time, so 
-    % it maybe be more prudent to access the matrix implicitly.
+    % it may be more prudent to access the matrix implicitly.
     %
     % example call:
     %  

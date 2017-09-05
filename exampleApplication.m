@@ -10,22 +10,22 @@ covtype = gunzip(covtype)
 A = csvread('covtype.csv');
 n = 2000;
 % trim off last column of labels
-D = A(randperm(size(A,1),n),1:end-1);
+X = A(randperm(size(A,1),n),1:end-1);
 
 % mean center and normalize numerical data, scale binary data by 1/sqrt(n)
-d = size(D,2);
+d = size(X,2);
 means = zeros(1,d);
-means(1:10) = mean(D(:,1:10));
-D = D - repmat(means,n,1);
+means(1:10) = mean(X(:,1:10));
+X = X - repmat(means,n,1);
 cnorms = 1/sqrt(n)*ones(1,d);
-cnorms(1:10) = 1./sqrt(sum(D(:,1:10).^2,1));
+cnorms(1:10) = 1./sqrt(sum(X(:,1:10).^2,1));
 cnorms(find(cnorms == Inf)) = 0;
-D = D*diag(cnorms);
+X = X*diag(cnorms);
 
 % set kernel variance
 gamma = 256;
 % explicitly construct full kernel for evaluating error
-K = gaussianKernel(D,1:n,1:n,gamma);
+K = gaussianKernel(X,1:n,1:n,gamma);
 
 %% Compare methods for approximating K
 % these are the sample sizes we'll try
@@ -39,8 +39,8 @@ for j = 1:trials
     for i = 1:length(svals)
         s = svals(i);
         fprintf('Constructing Nystrom approximation with %d samples\n',s);
-        kFunc = @(D,rowInd,colInd) gaussianKernel(D,rowInd,colInd,gamma);
-        [C,W] = recursiveNystrom(D,s,kFunc);
+        kFunc = @(X,rowInd,colInd) gaussianKernel(X,rowInd,colInd,gamma);
+        [C,W] = recursiveNystrom(X,s,kFunc);
         % error is the top eigenvalue of the difference between our approximation and K
         errorsRN(j,i) = eigs(@(x) K*x - C*(W*(C'*x)), n, 1);
     end
@@ -53,9 +53,9 @@ for j = 1:trials
     for i = 1:length(svals)
         s = svals(i);
         fprintf('Constructing Nystrom approximation with %d samples\n',s);
-        kFunc = @(D,rowInd,colInd) gaussianKernel(D,rowInd,colInd,gamma);
+        kFunc = @(X,rowInd,colInd) gaussianKernel(X,rowInd,colInd,gamma);
         samp = randperm(n,s);
-        C = kFunc(D,1:n,samp);
+        C = kFunc(X,1:n,samp);
         SKS = C(samp,:);
         W = inv(SKS+(10e-6)*eye(s,s));
         % error is the top eigenvalue of the difference between our approximation and K

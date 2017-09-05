@@ -23,12 +23,13 @@ Rank s Nyström approximation, in factored form.
 `C*W*C` approximates `X`'s full kernel matrix, `K`.
 
 
-In learning applications, it is natural to compute F = C*chol(W)'. F has n rows and each row can be supplied as a data point to a linear algorithm (regression, SVM, etc.) to approximate the kernel version of the algorithm. Caveat: the accelerated version of our algorithm runs in O(ns) time. Computing F = C*chol(W)' takes O(ns^2) time, so it maybe be more prudent to access the matrix implicitly.
+In learning applications, it is natural to compute `F = C*chol(W)'`. `F` has n rows and each row can be supplied as a data point to a linear algorithm (regression, SVM, etc.) to approximate the kernel version of the algorithm. Caveat: the accelerated version of our algorithm runs in O(ns) time. Computing `F = C*chol(W)'` takes O(ns^2) time, so it may be more prudent to access the matrix implicitly.
 
 ### Example
 
 **Compute a Nyström approximation for a Gaussian kernel matrix**
 -- Compute approximation for Gaussian kernel matrix with variance parameter $gamma = 40$, i.e., kernel function for points $x,y$ equal to $e^-(40*\|x - y\|^2)$.
+
 ```
 gamma = 40;
 kFunc = @(X,rowInd,colInd) gaussianKernel(X,rowInd,colInd,gamma);
