@@ -1,4 +1,4 @@
-# TEST recursive-nystrom: recursive importance sampling for the Nyström method
+# recursive-nystrom: recursive importance sampling for the Nyström method
 MATLAB code implementing the recursive ridge leverage score sampling algorithm developed in: [Recursive Sampling for the Nyström Method](https://arxiv.org/abs/1605.07583) (NIPS 2017).
 
 ## Installation
