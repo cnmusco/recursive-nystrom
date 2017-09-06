@@ -23,7 +23,7 @@ cnorms(find(cnorms == Inf)) = 0;
 X = X*diag(cnorms);
 
 % set kernel variance
-gamma = 256;
+gamma = 100;
 % explicitly construct full kernel for evaluating error
 K = gaussianKernel(X,1:n,1:n,gamma);
 
@@ -42,7 +42,12 @@ for j = 1:trials
         kFunc = @(X,rowInd,colInd) gaussianKernel(X,rowInd,colInd,gamma);
         [C,W] = recursiveNystrom(X,s,kFunc);
         % error is the top eigenvalue of the difference between our approximation and K
-        errorsRN(j,i) = eigs(@(x) K*x - C*(W*(C'*x)), n, 1);
+        % sometimes if K - CWC' ~ 0 eigs throws an error for non-convergence so catch this.
+        try
+            [errorsRN(j,i)] = eigs(@(x) K*x - C*(W*(C'*x)), n, 1);
+        catch
+            [errorsRN(j,i)] = 0;
+        end
     end
 end
 
@@ -59,7 +64,12 @@ for j = 1:trials
         SKS = C(samp,:);
         W = inv(SKS+(10e-6)*eye(s,s));
         % error is the top eigenvalue of the difference between our approximation and K
-        errorsUniform(j,i) = eigs(@(x) K*x - C*(W*(C'*x)), n, 1);
+        % sometimes if K - CWC' ~ 0 eigs throws an error for non-convergence so catch this.
+        try
+            errorsUniform(j,i) = eigs(@(x) K*x - C*(W*(C'*x)), n, 1);
+        catch
+            [errorsRN(j,i)] = 0;
+        end
     end
 end
 
