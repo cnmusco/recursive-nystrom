@@ -1,4 +1,4 @@
-# recursive-nystrom -- Recursive importance sampling for Nyström approximation
+# recursive-nystrom: recursive importance sampling for the Nyström method
 MATLAB code implementing the recursive ridge leverage score sampling algorithm developed in: [Recursive Sampling for the Nyström Method](https://arxiv.org/abs/1605.07583) (NIPS 2017).
 
 ## Installation
@@ -11,7 +11,7 @@ Download `recursiveNystrom.m`, [add to MATLAB path](https://www.mathworks.com/he
 
 - `X` : matrix with n rows (data points) and d columns (features)
 - `s` : number of samples used in Nyström approximation. default = sqrt(n). Generally should set s < n.
-- `kernelFunc` : A function that can compute arbitrary submatrices of `X`'s kernel matrix for some positive semidefinite kernel. For implementation specifics, see the provided example `gaussianKernel.m`. Default = gaussian kernel with width parameter &gamma; = 1, i.e. kernel function e<sup>-||x - y||<sup>2</sup></sup>.
+- `kernelFunc` : A function that can compute arbitrary submatrices of `X`'s kernel matrix for some positive semidefinite kernel. For implementation specifics, see the provided example `gaussianKernel.m`. Default = gaussian kernel, i.e. e<sup>-&gamma;||x - y||<sup>2</sup></sup>, with width parameter &gamma; = 1.
 - `accelerated_flag`: 0 or 1, default = 0. If the flag is set to 1, the code uses an accelerated version of the algorithm as described in Section 5.2.1 of the [NIPS paper.](https://arxiv.org/abs/1605.07583) This version will output a lower quality Nyström approximation, but run more quickly. We recommend setting accelerated_flag = 0 (the default) unless the standard version of the algorithm runs too slowly for your purposes.
 
 **Output:**
@@ -26,8 +26,7 @@ In learning applications, it is natural to compute `F = C*chol(W)'`. `F` has n r
 
 ### Example
 
-**Compute a Nyström approximation for a Gaussian kernel matrix**
-- Approximate Gaussian kernel matrix with variance parameter &gamma; = 20, i.e., kernel function equal to e<sup>-20||x - y||<sup>2</sup></sup>.
+**Compute a Nyström approximation for a Gaussian kernel matrix with variance parameter &gamma; = 20**
 
 ```
 % generate random test matrix
