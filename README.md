@@ -27,14 +27,16 @@ In learning applications, it is natural to compute `F = C*chol(W)'`. `F` has n r
 ### Example
 
 **Compute a Nyström approximation for a Gaussian kernel matrix**
-- Approximate Gaussian kernel matrix with variance parameter &gamma; = 40, i.e., kernel function equal to e<sup>-40||x - y||<sup>2</sup></sup>.
+- Approximate Gaussian kernel matrix with variance parameter &gamma; = 20, i.e., kernel function equal to e<sup>-20||x - y||<sup>2</sup></sup>.
 
 ```
 % generate random test matrix
 X = randn(2000,100); X = normc(X);
+
 % define function for computing kernel dot product
 gamma = 20;
 kFunc = @(X,rowInd,colInd) gaussianKernel(X,rowInd,colInd,gamma);
+
 % compute factors of Nyström approximation
 [C,W] = recursiveNystrom(X,500,kFunc);
 ```

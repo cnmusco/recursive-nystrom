@@ -8,7 +8,7 @@ covtype = gunzip(covtype)
 
 % read in data matrix and select small subset to experiment with
 A = csvread('covtype.csv');
-n = 2000;
+n = 6000;
 % trim off last column of labels
 X = A(randperm(size(A,1),n),1:end-1);
 
@@ -23,14 +23,14 @@ cnorms(find(cnorms == Inf)) = 0;
 X = X*diag(cnorms);
 
 % set kernel variance
-gamma = 100;
+gamma = 256;
 % explicitly construct full kernel for evaluating error
 K = gaussianKernel(X,1:n,1:n,gamma);
 
 %% Compare methods for approximating K
 % these are the sample sizes we'll try
-svals = [100:100:2000];
-trials = 5;
+svals = [200:200:2000];
+trials = 3;
 
 %% Recursive Ridge Leverage Score Nystrom
 errorsRN = zeros(trials,length(svals));
